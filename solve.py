@@ -149,11 +149,6 @@ def solve(move_delay=0.4):
 
 					im = sct.grab(monitor)
 					screenshot = np.delete(np.array(im, dtype=np.uint8), 3, axis=2)
-					# cv2.imshow('ss', screenshot)
-
-					# if cv2.waitKey(1) & 0xff == ord('q'):
-					# 	return
-					# else:
 					points = get_points_from_image(screenshot, center_mouse_coords, top_left_ss_coords)
 					shootable_points = remove_shot_at_targets_from_selection(points, past_shots)
 					if len(shootable_points) > 0:
@@ -194,37 +189,3 @@ if __name__ == "__main__":
 
 	with KeyboardListener(on_press=on_press):
 		solve(args.move_delay)
-
-# in order of recency
-# i think it may be shooting a spot too quickly before the server registers that the bottle is there? i have no idea, but i don't think i can figure out why
-
-# 27/3/24 it's shoot some random bottle that is rendered for like a split second like on the extreme left and right where bottles don't spawn, 
-# maybe they made this to prevent bots? it happens in the middle of the bottles rendering, then it will flash
-# or maybe im seeing things??? 
-# let's try to use delay time for first see
-# maybe i lower my fps to 30 instead of 60 previously
-# seems like the screenshot dimensions affect the movement drastically, i assume because im treating the center half the ss width and height which is not true
-# lets fix this based on absolute positioning since in the game the mouse position will always be constant
-
-
-# old:
-# with 0.1 movement, 0.8 wait for bottles to load, it will die towards the end when about 8 bottles appear, but they disappear fast and in order i think?
-# bot shoots like first 2 and then because of the wait time then its too slow
-
-# move if got nothing to shoot or can't shoot
-# if (first_see_time is None) or first_see_time + wait_load > time.time():
-# move to center only if not already at center
-
-# shoot only when bottles are finished loading
-# if (first_see_time is not None) and first_see_time + wait_load > time.time():
-# 	continue
-	# control when to shoot after seeing
-	# if first_see_time is None:
-	# 	first_see_time = time.time()
-	# else:
-	# first_see_time = None
-# Past notes
-# keep shooting until got nothing
-# try increase this somemore, problem is the bottles r there already but it wont shoot them
-# to prevent shooting same spot again? but the remove targets should counteract this already, i guess its one frame faster since it skips capture image
-
