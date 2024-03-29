@@ -9,12 +9,12 @@ Each wave, player has to shoot down all target bottle(s) within short amount of 
 #### Image processing
 - Screenshot frame
 - Filter using bottle outline - just shades of black
-	- Using lower and upper bound mask only results in too much noise. Compared each rgb channel because something like [40, 38, 39] is more convincingly black than [0, 10, 0] because the former is just a lighter shade of black while the latter is basically very dark green
+	- Using lower and upper bound mask only results in too much noise. Compared each rgb channel because something like [40, 38, 39] is more convincingly black than [0, 10, 0]. The former is just a lighter shade of black while the latter is basically very dark green
 	- Filter max grayscale value <= around 40
 - Find contours by connected pixels
 - Bound rectangles with a minimum size requirement to get positions of bottles
 
-- Briefly tried basic morphological transformations and wasn't effective but could work
+- Briefly tried basic morphological transformations, wasn't effective but could work
 
 #### Movement algorithm
 - Main problem with shooting: 
@@ -25,10 +25,10 @@ Each wave, player has to shoot down all target bottle(s) within short amount of 
 	- Mouse movements are 100% accurate with 0.1s delay for the game to process mouse inputs
 
 - Movement algo:
-	- Return to center there is nothing or nothing that hasn't already been shot at - to get a full view of all possible target spawn locations
+	- Return to center if there is nothing or nothing that hasn't already been shot at to get a full view of all possible target locations
 	- Time-based memory to determine which targets to shoot at
 		- Track all positions that were shot at up to 1 second ago through storing cumulative mouse movements
-		- If tracked position and actual observed position of target is within distance threshold, target has been shot at before so don't add to list of shootable bottles
+		- If tracked position and actual observed position of target is within distance threshold, the algo will know that the target has been shot at before and skip shooting at it
 	- Shoot all shootable bottles in screenshot
 
 #### Settings
@@ -37,6 +37,5 @@ Each wave, player has to shoot down all target bottle(s) within short amount of 
 - GUI smallest to remove interfering elements
 
 #### Struggles
-- When testing mouse movement accuracy, I found that mouse movements can sometimes be inaccurate even with 0.3s delay, but I probably tested this wrongly
-- This led to a lot of unnecessary movement calibration fixes that wasted time
-- Image processing technique was originally not as good, and because garbage in, garbage out, a lot of unnecessary calibration fixes were made
+- When testing mouse movement accuracy, I misinterpeted that mouse movements were inaccurate but they were actually due to other issues. This led to a lot of pointless movement calibration fixes that wasted time.
+- Image processing technique was originally not as good. Since garbage in, garbage out, this led to many ineffective calibration attempts.
